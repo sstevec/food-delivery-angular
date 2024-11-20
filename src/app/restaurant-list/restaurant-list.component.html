@@ -1,0 +1,24 @@
+<div class="search-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Search Restaurants</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Enter restaurant name">
+  </mat-form-field>
+</div>
+
+<div class="restaurant-list">
+  <mat-list>
+    <!-- Full-width button for each restaurant -->
+    <mat-list-item *ngFor="let restaurant of (restaurants$ | async)">
+      <button mat-button class="restaurant-button" [routerLink]="['/menu', restaurant.id]">
+        <span class="restaurant-name">{{ restaurant.name }}</span>
+        <!-- Placeholder for future image -->
+        <!-- <img matListAvatar src="{{ restaurant.imageUrl }}" alt="{{ restaurant.name }} Image"> -->
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div class="pagination-controls">
+  <button mat-button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+  <button mat-button (click)="nextPage()">Next</button>
+</div>

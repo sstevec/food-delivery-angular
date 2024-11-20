@@ -1,0 +1,30 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.restaurant-list {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.restaurant-button {
+  width: 100%;          /* Make button take full width */
+  text-align: left;     /* Align text to the left */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.restaurant-name {
+  flex: 1;
+  font-size: 1.2em;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 20px auto;
+}

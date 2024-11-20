@@ -1,0 +1,32 @@
+<div class="cart-page-container">
+
+  <!-- Top Card: Current Order -->
+  <mat-card class="current-order-card" *ngIf="currentOrderItems().length > 0">
+    <h3>Current Order</h3>
+    <div *ngFor="let item of currentOrderItems()">
+      <span>{{ item.item.name }} x{{ item.quantity }}</span>
+    </div>
+    <div class="order-actions">
+      <button mat-raised-button color="primary" (click)="payOrder()">Pay</button>
+      <button mat-raised-button color="warn" (click)="cancelOrder()">Cancel</button>
+    </div>
+  </mat-card>
+
+  <!-- Bottom Card: Past Orders (Paginated) -->
+  <mat-card class="past-orders-card">
+    <h3>Past Orders</h3>
+    <div *ngFor="let order of (paginatedOrders$ | async)">
+      <div class="order">
+        <p><strong>Order Date:</strong> {{ order.date | date }}</p>
+        <ul>
+          <li *ngFor="let item of order.items">{{ item.name }} x{{ item.quantity }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pagination-controls">
+      <button mat-button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      <button mat-button (click)="nextPage()">Next</button>
+    </div>
+  </mat-card>
+
+</div>

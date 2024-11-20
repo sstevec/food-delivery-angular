@@ -1,0 +1,45 @@
+<div class="menu-page">
+  <!-- Row 1: Restaurant Info Card (Full Width) -->
+  <mat-card class="restaurant-info-card">
+    <h2>{{ restaurantName$ | async }}</h2>
+    <p>Some description about the restaurant will go here...</p>
+  </mat-card>
+
+  <!-- Row 2: Categories, Food Items, and Cart Panels -->
+  <div class="content-container">
+    <!-- Category List -->
+    <mat-card class="category-list">
+      <h3>Categories</h3>
+      <button mat-button *ngFor="let category of categories()" (click)="selectCategory(category)">
+        {{ category }}
+      </button>
+    </mat-card>
+
+    <!-- Food Items -->
+    <mat-card class="food-list">
+      <h3>Food Items - {{ selectedCategory() }}</h3>
+      <div *ngFor="let food of filteredItems()" class="food-item">
+        <span>{{ food.name }}</span>
+        <button mat-button color="primary" (click)="addToCart(food)">Add</button>
+      </div>
+    </mat-card>
+
+    <!-- Cart -->
+    <mat-card class="cart">
+      <h3>Cart</h3>
+      <div *ngFor="let cartItem of cartItems()" class="cart-item">
+        <span class="cart-item-name">{{ cartItem.item.name }}</span>
+        <div class="cart-item-controls">
+          <button mat-icon-button color="warn" (click)="decreaseQuantity(cartItem.item)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span class="cart-item-count">{{ cartItem.quantity }}</span>
+          <button mat-icon-button color="accent" (click)="increaseQuantity(cartItem.item)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="goToCartPage()">Order</button>
+    </mat-card>
+  </div>
+</div>

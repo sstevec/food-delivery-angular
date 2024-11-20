@@ -1,0 +1,78 @@
+/* Root container for the menu page, centered and limited to 80% of the screen width */
+.menu-page {
+  display: grid;
+  grid-template-rows: auto 1fr;  /* Info card at the top, content container below */
+  height: calc(100vh - 64px);  /* Full height minus header */
+  gap: 10px;
+  width: 80vw;  /* 80% of the viewport width */
+  margin: 0 auto;  /* Center horizontally */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Restaurant Info Card styling with fixed height */
+.restaurant-info-card {
+  grid-column: 1 / -1;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Content container styling for categories, food items, and cart */
+.content-container {
+  display: grid;
+  grid-template-columns: 15% auto 25%;  /* 15% for categories, 65% for food, 25% for cart */
+  gap: 10px;
+  width: 100%;  /* Takes full width of the menu page */
+  box-sizing: border-box;
+}
+
+/* Individual card styling */
+.category-list {
+  padding: 16px;
+}
+
+.food-list {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.cart {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Specific styling for the food item list */
+.food-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* Cart item styling */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* Name of the cart item */
+.cart-item-name {
+  flex: 1;  /* Takes up remaining space */
+}
+
+/* Controls for adding, counting, and reducing items */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;  /* Space between buttons and count */
+}
+
+.cart-item-count {
+  font-weight: bold;
+  min-width: 24px;  /* Fixed width to align consistently */
+  text-align: center;
+}
