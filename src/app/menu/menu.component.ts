@@ -4,7 +4,7 @@ import {RestaurantService} from '../services/restaurant.service';
 import {CartService} from '../services/cart.service';
 import {filter, map, Observable} from 'rxjs';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {MatCard} from '@angular/material/card';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {MatIcon} from '@angular/material/icon';
@@ -23,12 +23,17 @@ import {MatIcon} from '@angular/material/icon';
     MatGridTile,
     MatGridList,
     MatIconButton,
-    MatIcon
+    MatIcon,
+    NgStyle
   ],
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  restaurantName$: Observable<string | undefined>;  // Observable for async data
+  restaurant$: Observable<{
+    id: 1,
+    name: '404',
+    imageUrl: 'assets/images/res_image2.jpeg'
+  }>;  // Observable for async data
   foodItems$: Observable<any[]>;                    // Observable for async data
 
   // Signals for frontend state
@@ -44,8 +49,7 @@ export class MenuComponent implements OnInit {
     private router: Router
   ) {
     const restaurantId = Number(this.route.snapshot.paramMap.get('id'));
-    this.restaurantName$ = this.restaurantService.getRestaurantById(restaurantId)
-      .pipe(map(restaurant => restaurant?.name || 'Restaurant Not Found'));
+    this.restaurant$ = this.restaurantService.getRestaurantById(restaurantId);
 
     this.foodItems$ = this.restaurantService.getMenuByRestaurantId(restaurantId);
   }

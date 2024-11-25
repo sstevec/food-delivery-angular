@@ -6,8 +6,9 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
-import {AsyncPipe, NgForOf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgOptimizedImage} from '@angular/common';
 import {RouterLink} from '@angular/router';
+import {MatCard} from '@angular/material/card';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -22,7 +23,9 @@ import {RouterLink} from '@angular/router';
     FormsModule,
     NgForOf,
     AsyncPipe,
-    RouterLink
+    RouterLink,
+    NgOptimizedImage,
+    MatCard
   ],
   templateUrl: './restaurant-list.component.html',
   styleUrls: ['./restaurant-list.component.css']
@@ -32,7 +35,7 @@ export class RestaurantListComponent implements OnInit{
   searchTerm: string = '';
   restaurants$!: Observable<any[]>;
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 8;
 
   constructor(private restaurantService: RestaurantService) {
   }

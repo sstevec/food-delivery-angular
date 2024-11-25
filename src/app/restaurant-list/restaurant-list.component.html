@@ -6,16 +6,20 @@
 </div>
 
 <div class="restaurant-list">
-  <mat-list>
-    <!-- Full-width button for each restaurant -->
-    <mat-list-item *ngFor="let restaurant of (restaurants$ | async)">
-      <button mat-button class="restaurant-button" [routerLink]="['/menu', restaurant.id]">
-        <span class="restaurant-name">{{ restaurant.name }}</span>
-        <!-- Placeholder for future image -->
-        <!-- <img matListAvatar src="{{ restaurant.imageUrl }}" alt="{{ restaurant.name }} Image"> -->
-      </button>
-    </mat-list-item>
-  </mat-list>
+  <!-- Restaurant Cards -->
+  <div class="restaurant-card" *ngFor="let restaurant of (restaurants$ | async)" [routerLink]="['/menu', restaurant.id]">
+    <mat-card>
+      <!-- First Row: Restaurant Name -->
+      <div class="restaurant-card-header">
+        <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+        <!-- Placeholder for ratings -->
+        <!-- <span class="restaurant-rating">4.5 ★</span> -->
+      </div>
+
+      <!-- Second Row: Restaurant Image -->
+      <img class="restaurant-image" src="{{ restaurant.imageUrl }}" alt="{{ restaurant.name }} Image">
+    </mat-card>
+  </div>
 </div>
 
 <div class="pagination-controls">

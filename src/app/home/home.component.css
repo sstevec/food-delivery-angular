@@ -4,3 +4,15 @@
   align-items: center;
   height: 100vh;
 }
+
+.home-page {
+  height: calc(100vh - 64px); /* Full height minus header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/images/home_bg.jpeg'); /* Path to the background image */
+  background-size: cover;       /* Scale image to cover the container */
+  background-position: center;  /* Center the image */
+  background-repeat: no-repeat; /* Prevent tiling */
+  width: 100vw; /* Full viewport width */
+}

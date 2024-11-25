@@ -1,30 +1,68 @@
 .search-container {
   display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
+  justify-content: center;  /* Center the search bar */
+  margin-top: 16px;         /* Add padding below the nav bar */
+  margin-bottom: 16px;      /* Add padding above the restaurant list */
+}
+
+mat-form-field {
+  width: 40vw;              /* Set the search bar width to 40% of the viewport */
 }
 
 .restaurant-list {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* Space between cards */
+  width: 100%;
 }
 
-.restaurant-button {
-  width: 100%;          /* Make button take full width */
-  text-align: left;     /* Align text to the left */
+.restaurant-card {
+  width: 50vw; /* 60% of the viewport width */
+  height: 24vh; /* 15% of the viewport height */
+  text-decoration: none; /* Remove underline on links */
+  cursor: pointer;
+}
+
+mat-card {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
+  height: 100%;
+  padding: 16px;
+  background-color: rgba(248, 248, 248, 0.5); /* White with 80% opacity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+mat-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.restaurant-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .restaurant-name {
-  flex: 1;
-  font-size: 1.2em;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.restaurant-image {
+  width: 100%;            /* Match the width of the card */
+  height: calc(100% - 3em); /* Adjust height to fit the remaining space below the name (subtract space for text and padding) */
+  object-fit: cover;      /* Scale the image to fill the available space without distortion */
+  border-radius: 4px;     /* Optional: Rounded corners */
 }
 
 .pagination-controls {
   display: flex;
   justify-content: space-between;
-  max-width: 600px;
+  max-width: 800px;
   margin: 20px auto;
 }
