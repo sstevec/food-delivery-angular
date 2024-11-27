@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-
+import { BackendIp } from './constants';
 import {MOCK_FOOD_ITEMS, MOCK_RESTAURANTS} from './mock-data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RestaurantService {
-  private baseUrl = 'https://your-backend-api.com/restaurants';
+  private baseUrl =  BackendIp +'/restaurant';
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +22,7 @@ export class RestaurantService {
   //     params.search = searchTerm;
   //   }
   //
-  //   return this.http.get<any[]>(this.baseUrl, { params });
+  //   return this.http.get<any[]>(this.baseUrl + "/getRestaurants", { params });
   // }
 
   getRestaurants(searchTerm: string, page: number, pageSize: number): Observable<any[]> {
