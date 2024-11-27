@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {map, Observable, of, tap} from 'rxjs';
 import { BackendIp } from './constants';
 import {MOCK_FOOD_ITEMS, MOCK_RESTAURANTS} from './mock-data';
 
@@ -8,47 +8,77 @@ import {MOCK_FOOD_ITEMS, MOCK_RESTAURANTS} from './mock-data';
   providedIn: 'root',
 })
 export class RestaurantService {
-  private baseUrl =  BackendIp +'/restaurant';
+  private baseUrl = BackendIp + '/restaurant';
+  private cacheData: any[] = [];
+  private totalImages = 10;
 
   constructor(private http: HttpClient) {}
 
-  // getRestaurants(searchTerm: string, page: number, pageSize: number): Observable<any[]> {
-  //   const params: any = {
-  //     page: page.toString(),
-  //     pageSize: pageSize.toString(),
-  //   };
-  //
-  //   if (searchTerm) {
-  //     params.search = searchTerm;
-  //   }
-  //
-  //   return this.http.get<any[]>(this.baseUrl + "/getRestaurants", { params });
-  // }
-
+  getAllRestaurants(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl + "/fetchAllRestaurants").pipe(
+      map(restaurants =>
+        restaurants.map(restaurant => ({
+          ...restaurant,
+          imageUrl: `assets/images/res_image${this.getRandomInt(1, this.totalImages)}.jpeg` // Assign a random image
+        }))
+      )
+    );
+  }
   getRestaurants(searchTerm: string, page: number, pageSize: number): Observable<any[]> {
+    if (this.cacheData.length === 0) {
+      return this.getAllRestaurants().pipe(
+        tap(data => {
+          this.cacheData = data; // Cache the data once fetched
+        }),
+        map(data => this.filterAndPaginateRestaurants(data, searchTerm, page, pageSize))
+      );
+    } else {
+      // Use cached data for filtering and pagination
+      const filteredData = this.filterAndPaginateRestaurants(this.cacheData, searchTerm, page, pageSize);
+      return of(filteredData); // Return as an observable
+    }
+  }
+
+  private filterAndPaginateRestaurants(data: any[], searchTerm: string, page: number, pageSize: number): any[] {
     // Filter by search term if provided
-    let filteredRestaurants = MOCK_RESTAURANTS;
+    let filteredRestaurants = data;
     if (searchTerm) {
-      filteredRestaurants = MOCK_RESTAURANTS.filter(restaurant =>
+      filteredRestaurants = data.filter(restaurant =>
         restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Paginate the filtered results
     const startIndex = (page - 1) * pageSize;
-    const paginatedRestaurants = filteredRestaurants.slice(startIndex, startIndex + pageSize);
-
-    // Return as an observable to simulate async API call
-    return of(paginatedRestaurants);
+    return filteredRestaurants.slice(startIndex, startIndex + pageSize);
   }
 
-  getRestaurantById(id: number): Observable<any | undefined> {
-    const restaurant = MOCK_RESTAURANTS.find(r => r.id === id);
-    return of(restaurant);
+  getRestaurantById(id: number): Observable<any> {
+    if (this.cacheData.length === 0) {
+      // Fetch all data if cache is empty
+      return this.getAllRestaurants().pipe(
+        tap(data => {
+          this.cacheData = data; // Cache the fetched data
+        }),
+        map(data => this.findRestaurantInCache(data, id)) // Find the restaurant in the fetched data
+      );
+    } else {
+      // Use cached data to find the restaurant
+      const restaurant = this.findRestaurantInCache(this.cacheData, id);
+      return of(restaurant); // Return as an observable
+    }
+  }
+
+  private findRestaurantInCache(data: any[], id: number): any {
+    return data.find(restaurant => restaurant.id === id) || null; // Return null if not found
   }
 
   getMenuByRestaurantId(restaurantId: number): Observable<any[]> {
     // Filter menu items by restaurant ID, assuming items have a `restaurantId` property
     return of(MOCK_FOOD_ITEMS);
+  }
+
+  private getRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
