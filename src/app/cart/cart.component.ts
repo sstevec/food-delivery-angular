@@ -70,13 +70,10 @@ export class CartComponent implements OnInit{
   }
 
   payOrder(): void {
-    const orderData = {
-      restaurantId: 1,  // Assuming a restaurant ID here
-      items: this.currentOrderItems()
-    };
-    console.log('Order sent to backend:', orderData);
+    this.cartService.insert_current_order();
     this.cartService.clearCart();
     this.loadCurrentOrder();
+    this.loadPastOrders();
   }
 
   cancelOrder(): void {

@@ -8,14 +8,14 @@ import {MOCK_FOOD_ITEMS, MOCK_RESTAURANTS} from './mock-data';
   providedIn: 'root',
 })
 export class RestaurantService {
-  private baseUrl = BackendIp + '/restaurant';
+  private baseUrl = BackendIp;
   private cacheData: any[] = [];
   private totalImages = 10;
 
   constructor(private http: HttpClient) {}
 
   getAllRestaurants(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl + "/fetchAllRestaurants").pipe(
+    return this.http.get<any[]>(this.baseUrl + "/restaurant/fetchAllRestaurants").pipe(
       map(restaurants =>
         restaurants.map(restaurant => ({
           ...restaurant,
@@ -74,8 +74,24 @@ export class RestaurantService {
   }
 
   getMenuByRestaurantId(restaurantId: number): Observable<any[]> {
-    // Filter menu items by restaurant ID, assuming items have a `restaurantId` property
-    return of(MOCK_FOOD_ITEMS);
+    const url = `${this.baseUrl}/foodCatalogue/fetchRestaurantAndFoodItemsById/${restaurantId}`;
+    return this.http.get<any>(url).pipe(
+      map(response => {
+        // Replace itemDescription with category and itemName with name
+        const transformedFoodItems = (response.foodItemsList || []).map((item: { itemName: any; itemDescription: any; }) => ({
+          ...item,
+          name: item.itemName, // Rename itemName to name
+          category: item.itemDescription, // Rename itemDescription to category
+        }));
+
+        // If foodItemsList is empty, use transformed MOCK_FOOD_ITEMS
+        if (transformedFoodItems.length === 0) {
+          return MOCK_FOOD_ITEMS;
+        }
+
+        return transformedFoodItems;
+      })
+    );
   }
 
   private getRandomInt(min: number, max: number): number {

@@ -40,6 +40,7 @@ export class MenuComponent implements OnInit {
   categories = signal<string[]>([]);
   filteredItems = signal<any[]>([]);
   cartItems = signal<any[]>([]);
+  totalPrice = signal<number>(0);
   selectedCategory = signal<string | null>(null);
 
   constructor(
@@ -79,19 +80,27 @@ export class MenuComponent implements OnInit {
   addToCart(food: any): void {
     this.cartService.addToCart(food);
     this.cartService.getCartItems().subscribe(items => this.cartItems.set(items));
+    this.totalPrice.set(this.cartService.computeTotalPrice())
   }
 
   increaseQuantity(item: any): void {
     this.cartService.addToCart(item);
     this.cartService.getCartItems().subscribe(items => this.cartItems.set(items));
+    this.totalPrice.set(this.cartService.computeTotalPrice())
   }
 
   decreaseQuantity(item: any): void {
     this.cartService.removeFromCart(item);
     this.cartService.getCartItems().subscribe(items => this.cartItems.set(items));
+    this.totalPrice.set(this.cartService.computeTotalPrice())
   }
 
   goToCartPage(): void {
+    this.restaurant$.subscribe(restaurant => {
+      if (restaurant) {
+        this.cartService.assembleOrder(restaurant.name);
+      }
+    });
     this.router.navigate(['/cart']);
   }
 }

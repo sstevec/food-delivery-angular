@@ -17,9 +17,10 @@
     <h3>Past Orders</h3>
     <div *ngFor="let order of (paginatedOrders$ | async)">
       <div class="order">
-        <p><strong>Order Date:</strong> {{ order.date | date }}</p>
+        <p>{{order.res_name}}</p>
+        <p><strong>Order Date:</strong> {{ order.date | date }} <strong>Total :</strong> {{ order.total}}</p>
         <ul>
-          <li *ngFor="let item of order.items">{{ item.name }} x{{ item.quantity }}</li>
+          <li *ngFor="let item of order.items">{{ item.item.itemName }} x{{ item.quantity }}</li>
         </ul>
       </div>
     </div>

@@ -23,7 +23,7 @@
     <mat-card class="food-list">
       <h3>Food Items - {{ selectedCategory() }}</h3>
       <div *ngFor="let food of filteredItems()" class="food-item">
-        <span>{{ food.name }}</span>
+        <span>{{ food.name }} - ${{food.price}}</span>
         <button mat-button color="primary" (click)="addToCart(food)">Add</button>
       </div>
     </mat-card>
@@ -43,6 +43,7 @@
           </button>
         </div>
       </div>
+      <div style="margin-top: 10px; margin-bottom: 10px"><strong>Total: </strong> ${{totalPrice()}}</div>
       <button mat-raised-button color="primary" (click)="goToCartPage()">Order</button>
     </mat-card>
   </div>

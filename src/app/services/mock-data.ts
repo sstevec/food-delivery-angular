@@ -44,11 +44,11 @@ export const FOOD_CATEGORIES = [
 ];
 
 export const PAST_ORDERS = [
-  {date: new Date(), items: [{name: 'Pizza', quantity: 2}, {name: 'Burger', quantity: 1}]},
-  {date: new Date(), items: [{name: 'Sushi Roll', quantity: 4}]},
-  {date: new Date(), items: [{name: 'Pasta', quantity: 1}]},
-  {date: new Date(), items: [{name: 'Salad', quantity: 3}]},
-  {date: new Date(), items: [{name: 'Tacos', quantity: 5}]},
-  {date: new Date(), items: [{name: 'Burrito', quantity: 2}]},
+  {date: new Date(), res_name: "The Burger Joint", items: [{name: 'Pizza', quantity: 2}, {name: 'Burger', quantity: 1}]},
+  {date: new Date(), res_name: "Jason Sushi Bar", items: [{name: 'Sushi Roll', quantity: 4}]},
+  {date: new Date(), res_name: "Pasta Paradise", items: [{name: 'Pasta', quantity: 1}]},
+  {date: new Date(), res_name: "Pasta Paradise", items: [{name: 'Salad', quantity: 3}]},
+  {date: new Date(), res_name: "Veggie Delights", items: [{name: 'Tacos', quantity: 5}]},
+  {date: new Date(), res_name: "Burrito Boy", items: [{name: 'Burrito', quantity: 2}]},
   // Add more items as needed for pagination
 ];
