@@ -1,17 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {PAST_ORDERS} from './mock-data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-
-  constructor() { }
-
   private cart: { [id: number]: { item: any; quantity: number } } = {};
   private current_order: any = null;
-  private past_orders: any = []
+  private past_orders: any[] = [];
+
+  constructor() {
+    this.loadFromLocalStorage(); // Load data from localStorage on service initialization
+  }
+
+  // Load cart and past orders from localStorage
+  private loadFromLocalStorage(): void {
+    const cartJson = localStorage.getItem('cart');
+    const pastOrdersJson = localStorage.getItem('past_orders');
+
+    if (cartJson) {
+      this.cart = JSON.parse(cartJson);
+    }
+
+    if (pastOrdersJson) {
+      this.past_orders = JSON.parse(pastOrdersJson);
+    }
+  }
+
+  // Save cart and past orders to localStorage
+  private saveToLocalStorage(): void {
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    localStorage.setItem('past_orders', JSON.stringify(this.past_orders));
+  }
 
   addToCart(item: any): void {
     if (this.cart[item.id]) {
@@ -19,6 +39,7 @@ export class CartService {
     } else {
       this.cart[item.id] = { item, quantity: 1 };
     }
+    this.saveToLocalStorage(); // Save updated cart to localStorage
   }
 
   removeFromCart(item: any): void {
@@ -28,6 +49,7 @@ export class CartService {
         delete this.cart[item.id];
       }
     }
+    this.saveToLocalStorage(); // Save updated cart to localStorage
   }
 
   getCartItems(): Observable<any[]> {
@@ -36,16 +58,15 @@ export class CartService {
 
   clearCart(): void {
     this.cart = {};
+    this.saveToLocalStorage(); // Save cleared cart to localStorage
   }
 
   getPaginatedPastOrders(page: number, pageSize: number): Observable<any[]> {
-    // Simulate a backend response with mock data
-
     // Calculate start and end index for pagination
     const start = (page - 1) * pageSize;
     const paginatedOrders = this.past_orders.slice(start, start + pageSize);
 
-    return of(paginatedOrders);  // Replace with an actual HTTP call to backend
+    return of(paginatedOrders);
   }
 
   computeTotalPrice(): number {
@@ -79,12 +100,12 @@ export class CartService {
     console.log('Order assembled:', this.current_order); // Optional: log the order for debugging
   }
 
-  // Function to get the current assembled order
   getCurrentOrder(): any {
     return this.current_order;
   }
 
   insert_current_order(): void {
-    this.past_orders.unshift(this.current_order)
+    this.past_orders.unshift(this.current_order); // Add the current order to past orders
+    this.saveToLocalStorage(); // Save updated past orders to localStorage
   }
 }

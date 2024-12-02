@@ -4,6 +4,8 @@ import {Router, RouterModule} from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {AuthService} from './services/auth.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +15,19 @@ import { MatButtonModule } from '@angular/material/button';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    NgIf,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private router: Router) {}
+  currentUser: string | null = null;
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
 
   goToHomePage(): void {
     this.router.navigate(['/']);
@@ -30,5 +39,9 @@ export class AppComponent {
 
   goToSignIn(): void {
     this.router.navigate(['/sign-in']);
+  }
+
+  signOut() {
+    this.authService.signOut();
   }
 }

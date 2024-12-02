@@ -12,10 +12,17 @@
       <mat-icon>shopping_cart</mat-icon>
     </button>
 
-    <!-- Sign In / Sign Up Button -->
-    <button mat-button (click)="goToSignIn()">
-      <mat-icon>account_circle</mat-icon> Sign In / Sign Up
-    </button>
+    <!-- User Section -->
+    <ng-container *ngIf="currentUser; else signInSignUp">
+      <button mat-button (click)="signOut()">
+        <mat-icon>account_circle</mat-icon> {{ currentUser }}
+      </button>
+    </ng-container>
+    <ng-template #signInSignUp>
+      <button mat-button (click)="goToSignIn()">
+        <mat-icon>account_circle</mat-icon> Sign In / Sign Up
+      </button>
+    </ng-template>
   </mat-toolbar>
 
   <!-- Content Wrapper for Pages -->
